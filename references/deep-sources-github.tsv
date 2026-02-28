@@ -1,0 +1,7 @@
+﻿name	type	stars	tags	url	note
+sindresorhus/awesome	github	437000	meta,curation,research	https://github.com/sindresorhus/awesome	总入口，先定领域再下钻到高质量列表
+jivoi/awesome-osint	github	24800	osint,intel,forums,research	https://github.com/jivoi/awesome-osint	OSINT 深水入口，含论坛/Q&A/灰色文献
+lockfale/OSINT-Framework	github	10700	osint,map,intel,workflow	https://github.com/lockfale/OSINT-Framework	树状信源地图，行动导向强
+sbilly/awesome-security	github	14000	security,threat-intel,tools	https://github.com/sbilly/awesome-security	威胁情报与安全资源入口
+meirwah/awesome-incident-response	github	8800	security,incident-response,community	https://github.com/meirwah/awesome-incident-response	实战响应社区与工具链入口
+papers-we-love/papers-we-love	github	103000	research,papers,methodology,community	https://github.com/papers-we-love/papers-we-love	经典论文与阅读社群入口

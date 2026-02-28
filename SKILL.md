@@ -1,57 +1,51 @@
 ﻿---
 name: source-intel-recommender
-description: Recommend high-value information sources based on user questions, using six project tracks plus Karpathy's 92 HN-curated feeds and local source links. Use when user asks for 信源推荐, 信息源优先级, 资料怎么找, or wants predicted knowledge value before reading.
+description: Recommend high-depth sources for broad and edge-case learning (including adversarial SEO/security perspectives), using Karpathy's 92 feeds and curated deep GitHub source maps. Use when user asks for 信源推荐, 边缘玩法研究入口, 深水论坛/论文/情报入口, or wants predicted knowledge value.
 ---
 
 # Source Intel Recommender
 
 ## When To Use
 Use this skill when the user asks:
-- 哪些信源值得看
-- 针对某个问题推荐信息源
-- 先看什么、后看什么
-- 这些来源能带来什么知识价值
+- 针对某个问题推荐高价值信源
+- 想要更广视野，尤其是边缘/对抗思路
+- 先看什么、后看什么最有效
+- 这些来源可能带来什么知识价值
 
 ## Inputs
-- User question and constraints (time, language, risk tolerance, budget)
-- `references/six-projects.md`
+- User question and constraints (time, language, risk appetite, build stage)
 - `references/karpathy-92-hn-2025.tsv`
-- `references/local-89-links.txt`
+- `references/deep-sources-github.tsv`
 
 ## Workflow
-1. Classify the question into one or two project tracks from `six-projects.md`.
-2. Build candidate sources:
-- Start from Karpathy-92 list (long-form depth baseline).
-- Add local links as tactical/market context.
-3. Score each candidate (1-5):
-- `Relevance`: task fit
-- `Depth`: original insight density
-- `Actionability`: can become SOP/experiment quickly
-- `Freshness`: likely still valid now
-- `Risk`: compliance/quality risk (reverse score; high risk -> low)
+1. Detect query focus tags (SEO/PSEO/GEO, adversarial, OSINT, security, research, automation, commerce).
+2. Build candidate pool:
+- Karpathy 92 long-form feed list (depth baseline)
+- Deep GitHub source maps (entry points for high-signal communities and docs)
+3. Score each source on 1-5:
+- `Relevance`: fit to query intent
+- `Depth`: insight density / first-principles value
+- `Actionability`: can turn into testable workflow quickly
+- `Freshness`: likely still useful now
+- `Consequence`: potential downside if copied blindly (higher score = better controllability)
 4. Compute `KnowledgeValue`:
-- `KnowledgeValue = 0.30*Relevance + 0.25*Depth + 0.25*Actionability + 0.10*Freshness + 0.10*Risk`
-5. Return top recommendations with predicted value:
-- Why this source fits the exact question
-- What specific knowledge likely extractable
-- Suggested reading order (quick win -> deep dive -> validation)
-- One warning if source quality/compliance is uncertain
+- `KnowledgeValue = 0.30*Relevance + 0.25*Depth + 0.25*Actionability + 0.10*Freshness + 0.10*Consequence`
+5. Output top recommendations:
+- Why source fits
+- What likely value it unlocks
+- Reading order (fast execution -> deep method -> adversarial counterexample)
+- Potential consequences (account risk, ranking volatility, reputation, legal exposure) when relevant
 
 ## Output Format
-Use this exact structure:
-
-1. `问题归类`: <project-track>
+1. `问题标签`: <comma-separated tags>
 2. `推荐信源 Top N`:
 - `<source>` | `KnowledgeValue: x.x/5` | `预计知识价值`: <one sentence>
 - ...
 3. `优先阅读顺序`: <3-5 items>
-4. `实验建议`: <1 next action within 24h>
+4. `可能后果`: <only when query has edge/adversarial intent>
+5. `实验建议`: <1 action in 24h>
 
 ## Heuristics
-- Prefer primary sources (official docs, original blogs, repos) over reposts.
-- For SEO/PSEO/GEO, add explicit compliance note.
-- For AI tooling/workflow, include one architecture source + one execution source + one case source.
-- If user gives a niche geo/industry, prioritize sources with domain evidence and recent updates.
-
-## Assumptions For This Workspace
-The six project tracks are mapped from local recap topics A-F. If user provides a different "six projects" list, replace mapping immediately and keep the same scoring workflow.
+- Prefer high-signal entry maps over random tactic posts.
+- For adversarial topics, explain likely consequences instead of only binary prohibition wording.
+- Mix at least one deep methodology source and one executable source map.
