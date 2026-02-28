@@ -7,9 +7,9 @@
 ## 数据来源
 
 - `references/karpathy-92-hn-2025.tsv`（92 个长文深水信源）
-- `references/deep-sources-github.tsv`（6 个高星深度入口型 GitHub 项目）
+- `references/deep-sources-github.tsv`（扩展后的高星深度入口型 GitHub 项目池）
 
-## 已内置的 6 个深水 GitHub 入口
+## 已内置的深水 GitHub 入口（节选）
 
 1. https://github.com/sindresorhus/awesome
 2. https://github.com/jivoi/awesome-osint
@@ -17,6 +17,13 @@
 4. https://github.com/sbilly/awesome-security
 5. https://github.com/meirwah/awesome-incident-response
 6. https://github.com/papers-we-love/papers-we-love
+7. https://github.com/awesome-selfhosted/awesome-selfhosted
+8. https://github.com/awesome-foss/awesome-sysadmin
+9. https://github.com/sindresorhus/awesome-privacy
+10. https://github.com/0x4D31/awesome-threat-detection
+11. https://github.com/vFense/awesome-browser-security
+12. https://github.com/rshipp/awesome-malware-analysis
+13. https://github.com/gmelodie/awesome-devsecops
 
 ## 使用方式
 
@@ -31,6 +38,7 @@ python scripts/recommend_sources.py "我想研究更偏黑帽的SEO对抗思路�
 - Top 信源推荐与 `KnowledgeValue`
 - 建议阅读顺序
 - 可能后果（针对边缘/对抗方向）
+- 建议补充列表类型（告诉你下一步该补哪类深水入口）
 - 24 小时可执行实验建议
 
 ## 说明

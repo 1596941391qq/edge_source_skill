@@ -7,7 +7,7 @@ A skill for recommending high-depth information sources to broaden perspective, 
 ## Data Sources
 
 - `references/karpathy-92-hn-2025.tsv` (92 long-form feeds)
-- `references/deep-sources-github.tsv` (6 high-star deep-source GitHub entry projects)
+- `references/deep-sources-github.tsv` (expanded deep-source GitHub entry projects)
 
 ## Included Deep GitHub Sources
 
@@ -17,6 +17,13 @@ A skill for recommending high-depth information sources to broaden perspective, 
 - https://github.com/sbilly/awesome-security
 - https://github.com/meirwah/awesome-incident-response
 - https://github.com/papers-we-love/papers-we-love
+- https://github.com/awesome-selfhosted/awesome-selfhosted
+- https://github.com/awesome-foss/awesome-sysadmin
+- https://github.com/sindresorhus/awesome-privacy
+- https://github.com/0x4D31/awesome-threat-detection
+- https://github.com/vFense/awesome-browser-security
+- https://github.com/rshipp/awesome-malware-analysis
+- https://github.com/gmelodie/awesome-devsecops
 
 ## Usage
 
@@ -29,6 +36,7 @@ Output includes:
 - Top source recommendations with `KnowledgeValue`
 - reading order
 - likely consequences for edge/adversarial directions
+- missing source-list types to further expand deep-zone coverage
 - 24h experiment suggestion
 
 ## Notes

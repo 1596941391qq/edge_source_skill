@@ -15,6 +15,8 @@ QUERY_TAGS = {
     "research": ["论文", "paper", "research", "methodology"],
     "agent": ["agent", "automation", "workflow", "mcp", "multi-agent"],
     "ecom": ["电商", "shopify", "独立站", "选品", "brand"],
+    "ops": ["ops", "运维", "infra", "selfhosted", "自托管", "基础设施"],
+    "privacy": ["privacy", "隐私", "匿名", "opsec"],
 }
 
 CLUSTER_TAGS = {
@@ -157,13 +159,34 @@ def diversified_top(ranked: list[tuple[float, Source]], n: int = 10) -> list[tup
     for kv, src in ranked:
         if len(chosen) >= n:
             break
-        if src.source_type == "deep-github" and deep_count < 4:
+        if src.source_type == "deep-github" and deep_count < 5:
             chosen.append((kv, src))
             deep_count += 1
-        elif src.source_type == "karpathy" and karpathy_count < 6:
+        elif src.source_type == "karpathy" and karpathy_count < 5:
             chosen.append((kv, src))
             karpathy_count += 1
     return chosen
+
+
+def missing_list_types(qtags: set[str], top: list[tuple[float, Source]]) -> list[str]:
+    covered = set()
+    for _, src in top:
+        covered |= src.tags
+
+    needs = []
+    if "adversarial" in qtags and "platform-policy-changelog" not in covered:
+        needs.append("平台政策/处罚案例变更列表（用于判断策略时效）")
+    if "seo" in qtags and "seo-forum-index" not in covered:
+        needs.append("SEO 实战论坛索引列表（白灰黑对抗样本）")
+    if "osint" in qtags and "regional-forums" not in covered:
+        needs.append("区域化语言论坛入口列表（俄语/西语/阿语）")
+    if "security" in qtags and "legal-casebook" not in covered:
+        needs.append("合规与执法判例索引列表（用于后果评估）")
+    if "ecom" in qtags and "ad-network-abuse" not in covered:
+        needs.append("广告平台风控与封禁案例列表（投放对抗视角）")
+    if not needs:
+        needs.append("私域高质量社区列表（付费论坛/邀请码社群）的可验证目录")
+    return needs
 
 
 def main() -> int:
@@ -173,10 +196,11 @@ def main() -> int:
 
     question = sys.argv[1]
     qtags, ranked = rank_sources(question)
+    deep_count = len(load_deep_github_sources())
     top = diversified_top(ranked, n=10)
 
     print(f"问题标签: {','.join(sorted(qtags))}")
-    print("候选库: Karpathy 92 + Deep GitHub 6")
+    print(f"候选库: Karpathy 92 + Deep GitHub {deep_count}")
     print("推荐信源 Top 10:")
     for i, (kv, src) in enumerate(top, 1):
         star_text = f" | stars {src.stars}" if src.stars else ""
@@ -185,6 +209,9 @@ def main() -> int:
     print("优先阅读顺序: 2个可执行入口 -> 2个方法论深读 -> 1个对抗反例校准")
     if "adversarial" in qtags or "seo" in qtags:
         print(CONSEQUENCE_TEXT)
+    print("建议补充列表类型:")
+    for item in missing_list_types(qtags, top):
+        print(f"- {item}")
     print("实验建议: 24小时内用前3个信源产出一页策略卡，包含目标、假设、最小实验和止损条件")
     return 0
 

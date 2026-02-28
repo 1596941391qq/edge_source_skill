@@ -5,3 +5,11 @@ lockfale/OSINT-Framework	github	10700	osint,map,intel,workflow	https://github.co
 sbilly/awesome-security	github	14000	security,threat-intel,tools	https://github.com/sbilly/awesome-security	威胁情报与安全资源入口
 meirwah/awesome-incident-response	github	8800	security,incident-response,community	https://github.com/meirwah/awesome-incident-response	实战响应社区与工具链入口
 papers-we-love/papers-we-love	github	103000	research,papers,methodology,community	https://github.com/papers-we-love/papers-we-love	经典论文与阅读社群入口
+awesome-selfhosted/awesome-selfhosted	github	239000	selfhosted,ops,infra,tools	https://github.com/awesome-selfhosted/awesome-selfhosted	自托管工具与基础设施深水入口
+awesome-foss/awesome-sysadmin	github	29000	ops,infra,workflow,tools	https://github.com/awesome-foss/awesome-sysadmin	Sysadmin 工具链与运维资源入口
+sindresorhus/awesome-privacy	github	96000	privacy,security,osint,research	https://github.com/sindresorhus/awesome-privacy	隐私与安全实践资源入口
+0x4D31/awesome-threat-detection	github	4400	threat-intel,security,detection,community	https://github.com/0x4D31/awesome-threat-detection	威胁检测与检测工程入口
+vFense/awesome-browser-security	github	2500	security,browser,adversarial,research	https://github.com/vFense/awesome-browser-security	浏览器安全与对抗面入口
+fabacab/awesome-lockpicking	github	9500	adversarial,methodology,community,research	https://github.com/fabacab/awesome-lockpicking	实体对抗方法论入口（迁移思路价值）
+rshipp/awesome-malware-analysis	github	15000	security,reverse,adversarial,tools	https://github.com/rshipp/awesome-malware-analysis	恶意代码分析与逆向入口
+gmelodie/awesome-devsecops	github	7900	security,devsecops,workflow,ops	https://github.com/gmelodie/awesome-devsecops	DevSecOps 与工程化安全入口

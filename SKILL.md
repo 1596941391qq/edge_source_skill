@@ -35,6 +35,7 @@ Use this skill when the user asks:
 - What likely value it unlocks
 - Reading order (fast execution -> deep method -> adversarial counterexample)
 - Potential consequences (account risk, ranking volatility, reputation, legal exposure) when relevant
+- Missing list types needed to further expand deep-zone coverage
 
 ## Output Format
 1. `问题标签`: <comma-separated tags>
@@ -43,7 +44,8 @@ Use this skill when the user asks:
 - ...
 3. `优先阅读顺序`: <3-5 items>
 4. `可能后果`: <only when query has edge/adversarial intent>
-5. `实验建议`: <1 action in 24h>
+5. `建议补充列表类型`: <1-5 precise categories>
+6. `实验建议`: <1 action in 24h>
 
 ## Heuristics
 - Prefer high-signal entry maps over random tactic posts.
