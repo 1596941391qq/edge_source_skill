@@ -16,12 +16,14 @@ Use this skill when the user asks:
 - User question and constraints (time, language, risk appetite, build stage)
 - `references/karpathy-92-hn-2025.tsv`
 - `references/deep-sources-github.tsv`
+- `references/deep-sources-telegram.tsv` (optional dynamic pool)
 
 ## Workflow
 1. Detect query focus tags (SEO/PSEO/GEO, adversarial, OSINT, security, research, automation, commerce).
 2. Build candidate pool:
 - Karpathy 92 long-form feed list (depth baseline)
 - Deep GitHub source maps (entry points for high-signal communities and docs)
+- Telegram channel pool (fast-moving adversarial/community signals)
 3. Score each source on 1-5:
 - `Relevance`: fit to query intent
 - `Depth`: insight density / first-principles value

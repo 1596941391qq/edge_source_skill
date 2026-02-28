@@ -8,6 +8,7 @@
 
 - `references/karpathy-92-hn-2025.tsv`（92 个长文深水信源）
 - `references/deep-sources-github.tsv`（扩展后的高星深度入口型 GitHub 项目池）
+- `references/deep-sources-telegram.tsv`（Telegram 深水频道池，可持续导入）
 
 ## 已内置的深水 GitHub 入口（节选）
 
@@ -40,6 +41,19 @@ python scripts/recommend_sources.py "我想研究更偏黑帽的SEO对抗思路�
 - 可能后果（针对边缘/对抗方向）
 - 建议补充列表类型（告诉你下一步该补哪类深水入口）
 - 24 小时可执行实验建议
+
+## Telegram 接入（可选）
+
+1. 安装依赖：
+```bash
+pip install telethon
+```
+2. 设置环境变量：`TG_API_ID`、`TG_API_HASH`（可选 `TG_SESSION`）
+3. 导入频道：
+```bash
+python scripts/import_telegram_sources.py --query "seo blackhat osint" --limit 30 --tags "telegram,seo,adversarial"
+```
+4. 重新执行推荐脚本，候选库会自动包含 Telegram 池。
 
 ## 说明
 

@@ -8,6 +8,7 @@ A skill for recommending high-depth information sources to broaden perspective, 
 
 - `references/karpathy-92-hn-2025.tsv` (92 long-form feeds)
 - `references/deep-sources-github.tsv` (expanded deep-source GitHub entry projects)
+- `references/deep-sources-telegram.tsv` (Telegram deep-source pool, continuously importable)
 
 ## Included Deep GitHub Sources
 
@@ -38,6 +39,19 @@ Output includes:
 - likely consequences for edge/adversarial directions
 - missing source-list types to further expand deep-zone coverage
 - 24h experiment suggestion
+
+## Optional Telegram Integration
+
+1. Install dependency:
+```bash
+pip install telethon
+```
+2. Set env vars: `TG_API_ID`, `TG_API_HASH` (optional `TG_SESSION`)
+3. Import channels:
+```bash
+python scripts/import_telegram_sources.py --query "seo blackhat osint" --limit 30 --tags "telegram,seo,adversarial"
+```
+4. Re-run recommender; Telegram sources are included automatically.
 
 ## Notes
 

@@ -6,6 +6,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 KARPATHY = ROOT / "references" / "karpathy-92-hn-2025.tsv"
 DEEP_GH = ROOT / "references" / "deep-sources-github.tsv"
+TELEGRAM = ROOT / "references" / "deep-sources-telegram.tsv"
 
 QUERY_TAGS = {
     "seo": ["seo", "pseo", "geo", "serp", "排名", "收录", "关键词"],
@@ -17,6 +18,7 @@ QUERY_TAGS = {
     "ecom": ["电商", "shopify", "独立站", "选品", "brand"],
     "ops": ["ops", "运维", "infra", "selfhosted", "自托管", "基础设施"],
     "privacy": ["privacy", "隐私", "匿名", "opsec"],
+    "telegram": ["telegram", "tg", "频道", "群组", "t.me", "@channel"],
 }
 
 CLUSTER_TAGS = {
@@ -114,18 +116,48 @@ def load_deep_github_sources() -> list[Source]:
     return out
 
 
+def load_telegram_sources() -> list[Source]:
+    out = []
+    if not TELEGRAM.exists():
+        return out
+    with TELEGRAM.open("r", encoding="utf-8-sig") as f:
+        reader = csv.DictReader(f, delimiter="\t")
+        for row in reader:
+            members = int(row.get("members", "0") or "0")
+            # Telegram is fresher but noisier; keep depth moderate.
+            depth = 3.9 + min(0.6, members / 300000.0)
+            out.append(
+                Source(
+                    name=row.get("name", "telegram-source"),
+                    url=row.get("url", ""),
+                    source_type="deep-telegram",
+                    tags=parse_tags(row.get("tags", "")),
+                    note=row.get("note", "Telegram 深水入口"),
+                    depth=round(depth, 2),
+                    stars=members,
+                )
+            )
+    return out
+
+
 def component_scores(src: Source, qtags: set[str]) -> tuple[float, float, float, float, float]:
     overlap = len(src.tags & qtags)
     relevance = min(5.0, 2.3 + overlap * 1.1)
 
     depth = src.depth
     freshness = 3.8 if src.source_type == "deep-github" else 3.6
+    if src.source_type == "deep-telegram":
+        freshness = 4.3
 
     actionability = 3.5
     if src.source_type == "deep-github":
         actionability = 4.0
         if "workflow" in src.tags or "tools" in src.tags or "meta" in src.tags:
             actionability = 4.4
+    if src.source_type == "deep-telegram":
+        actionability = 4.1
+        if "adversarial" in src.tags or "osint" in src.tags:
+            actionability = 4.3
 
     consequence = 4.2
     if "adversarial" in qtags:
@@ -143,7 +175,7 @@ def knowledge_value(scores: tuple[float, float, float, float, float]) -> float:
 
 def rank_sources(query: str) -> tuple[set[str], list[tuple[float, Source]]]:
     qtags = extract_query_tags(query)
-    sources = load_deep_github_sources() + load_karpathy_sources()
+    sources = load_deep_github_sources() + load_telegram_sources() + load_karpathy_sources()
     ranked = []
     for src in sources:
         kv = knowledge_value(component_scores(src, qtags))
@@ -156,12 +188,16 @@ def diversified_top(ranked: list[tuple[float, Source]], n: int = 10) -> list[tup
     chosen = []
     karpathy_count = 0
     deep_count = 0
+    tg_count = 0
     for kv, src in ranked:
         if len(chosen) >= n:
             break
         if src.source_type == "deep-github" and deep_count < 5:
             chosen.append((kv, src))
             deep_count += 1
+        elif src.source_type == "deep-telegram" and tg_count < 3:
+            chosen.append((kv, src))
+            tg_count += 1
         elif src.source_type == "karpathy" and karpathy_count < 5:
             chosen.append((kv, src))
             karpathy_count += 1
@@ -174,14 +210,14 @@ def missing_list_types(qtags: set[str], top: list[tuple[float, Source]]) -> list
         covered |= src.tags
 
     needs = []
-    if "adversarial" in qtags and "platform-policy-changelog" not in covered:
-        needs.append("平台政策/处罚案例变更列表（用于判断策略时效）")
+    if "telegram" in qtags and "telegram" not in covered:
+        needs.append("Telegram 高质量频道种子列表（按语种/主题分层）")
+    if ("adversarial" in qtags or "seo" in qtags) and "telegram" not in covered:
+        needs.append("Telegram 对抗实战频道列表（附噪声评分）")
     if "seo" in qtags and "seo-forum-index" not in covered:
         needs.append("SEO 实战论坛索引列表（白灰黑对抗样本）")
     if "osint" in qtags and "regional-forums" not in covered:
         needs.append("区域化语言论坛入口列表（俄语/西语/阿语）")
-    if "security" in qtags and "legal-casebook" not in covered:
-        needs.append("合规与执法判例索引列表（用于后果评估）")
     if "ecom" in qtags and "ad-network-abuse" not in covered:
         needs.append("广告平台风控与封禁案例列表（投放对抗视角）")
     if not needs:
@@ -197,10 +233,11 @@ def main() -> int:
     question = sys.argv[1]
     qtags, ranked = rank_sources(question)
     deep_count = len(load_deep_github_sources())
+    tg_count = len(load_telegram_sources())
     top = diversified_top(ranked, n=10)
 
     print(f"问题标签: {','.join(sorted(qtags))}")
-    print(f"候选库: Karpathy 92 + Deep GitHub {deep_count}")
+    print(f"候选库: Karpathy 92 + Deep GitHub {deep_count} + Telegram {tg_count}")
     print("推荐信源 Top 10:")
     for i, (kv, src) in enumerate(top, 1):
         star_text = f" | stars {src.stars}" if src.stars else ""
